@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { Dashboard, Orders, Profile, Login } from "../../pages";
 import ProtectedRoute from "./ProtectedRoutes";

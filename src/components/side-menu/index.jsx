@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import SideMenuData from "./side-menu-data";
 import { Grid, IconButton } from "@mui/material";
 import "./index.css";
@@ -164,7 +164,11 @@ export const SideMenu = (props) => {
                       <Button variant="text" className="side-menu-notificatin">
                         <img src={NotificationIcon} />
                       </Button>
-                      <Button variant="text" className="side-menu-profile" onClick={()=> navigate('/profile')}>
+                      <Button
+                        variant="text"
+                        className="side-menu-profile"
+                        onClick={() => navigate("/profile")}
+                      >
                         <img src="https://a.storyblok.com/f/191576/1200x800/faa88c639f/round_profil_picture_before_.webp" />
                       </Button>
                     </div>

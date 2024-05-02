@@ -1,6 +1,5 @@
 import React from "react";
 import { SideMenu } from "../../components";
-import axios from "axios";
 import "./index.css";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -17,27 +16,12 @@ import { AuthContext } from "../../config/AuthContext";
 const Orders = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
-  const { users, setUsers } = React.useContext(AuthContext);
+  const { users } = React.useContext(AuthContext);
 
   const convertToDollars = (amount) => {
     return `$${(amount / 100).toFixed(2)}`;
   };
   const [expandedOrderId, setExpandedOrderId] = React.useState(null);
-
-  const fetchUsersWithOrders = async () => {
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/admin/all-orders`,
-      );
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
-  React.useEffect(() => {
-    fetchUsersWithOrders();
-  }, []);
 
   const handleExpandClick = (orderId) => {
     setExpandedOrderId(orderId === expandedOrderId ? null : orderId);

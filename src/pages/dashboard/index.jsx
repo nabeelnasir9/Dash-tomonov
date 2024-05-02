@@ -1,27 +1,17 @@
-import { useState } from "react";
-import {
-  SideMenu,
-  SalesAndPurchaseChart,
-  OrderSummaryChart,
-} from "../../components";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { SideMenu } from "../../components";
 import Grid from "@mui/material/Grid";
 import "./index.css";
 import SalesIcon from "./../../assets/svg/sales.svg";
 import RevenueIcon from "./../../assets/svg/revenue.svg";
 import ProfitIcon from "./../../assets/svg/profit.svg";
 import CostIcon from "./../../assets/svg/cost.svg";
-import QuantityInHandIcon from "./../../assets/svg/quantity-in-hand.svg";
-import ToBeReceivedIcon from "./../../assets/svg/to-be-received.svg";
-import PurchaseIcon from "./../../assets/svg/purchase.svg";
-import CancelIcon from "./../../assets/svg/cancel.svg";
-import NumberOfSuppliersIcon from "./../../assets/svg/number-of-suppliers.svg";
-import NumberOfCategoriesIcon from "./../../assets/svg/number-of-categories.svg";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -33,23 +23,47 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 }));
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
+  const convertToDollars = (amount) => {
+    return `$${(amount / 100).toFixed(2)}`;
+  };
   const [filter, setFilter] = useState("Weekly");
   const FilterList = ["Weekly", "Monthly", "Yearly"];
+  const [Orders, setOrders] = useState([]);
+  const getOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/admin/all-orders`,
+      );
+      setOrders(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  useEffect(() => {
+    getOrders();
+  }, []);
+
   return (
     <SideMenu>
       <Grid container spacing={3}>
-        <Grid item xs={12} sm={12} md={8} lg={8} xl={8}>
+        <Grid item xs={12} sm={12} md={8} lg={12} xl={12}>
           <div className="dashboard-box">
-            <p className="dashboard-box-title">Sales Overview</p>
+            <p className="dashboard-box-title">Orders Information</p>
             <Grid container spacing={3}>
               <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
                 <div className="dashboard-box-innner">
                   <div className="dashboard-box-icon">
                     <img src={SalesIcon} alt="alt" />
                   </div>
+
                   <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">$ 832</p>
-                    <p className="dashboard-box-footer-title">Sales</p>
+                    <p className="dashboard-box-footer-title">Total Orders</p>
+                    {Orders?.totalItemCount && (
+                      <p className="dashboard-box-price">
+                        {Orders.totalItemCount}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Grid>
@@ -62,133 +76,50 @@ const Dashboard = () => {
                     <img src={RevenueIcon} alt="alt" />
                   </div>
                   <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">$ 18,300</p>
+                    <p className="dashboard-box-footer-title">Paid(Stripe)</p>
+                    {Orders?.paymentStatusCounts && (
+                      <p className="dashboard-box-price">
+                        {Orders?.paymentStatusCounts?.paid}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </Grid>
+              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
+                <div className="dashboard-box-innner">
+                  <div className="dashboard-box-icon">
+                    <img src={ProfitIcon} alt="alt" />
+                  </div>
+                  <div className="dashboard-box-footer">
+                    <p className="dashboard-box-footer-title">Unpaid(Stripe)</p>
+                    {Orders?.paymentStatusCounts && (
+                      <p className="dashboard-box-price">
+                        {Orders?.paymentStatusCounts?.unpaid}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </Grid>
+              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
+                <div
+                  className="dashboard-box-innner"
+                  style={{ borderRightWidth: "0px" }}
+                >
+                  <div className="dashboard-box-icon">
+                    <img src={CostIcon} alt="alt" />
+                  </div>
+                  <div className="dashboard-box-footer">
                     <p className="dashboard-box-footer-title">Revenue</p>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
-                <div className="dashboard-box-innner">
-                  <div className="dashboard-box-icon">
-                    <img src={ProfitIcon} alt="alt" />
-                  </div>
-                  <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">$ 868</p>
-                    <p className="dashboard-box-footer-title">Profit</p>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
-                <div
-                  className="dashboard-box-innner"
-                  style={{ borderRightWidth: "0px" }}
-                >
-                  <div className="dashboard-box-icon">
-                    <img src={CostIcon} alt="alt" />
-                  </div>
-                  <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">$ 17,432</p>
-                    <p className="dashboard-box-footer-title">Cost</p>
+                    {Orders?.paymentStatusCounts && (
+                      <p className="dashboard-box-price">
+                        {convertToDollars(Orders.totalAmount)}
+                      </p>
+                    )}
                   </div>
                 </div>
               </Grid>
             </Grid>
           </div>
-          <div className="dashboard-box">
-            <p className="dashboard-box-title">Purchase Overview</p>
-            <Grid container spacing={3}>
-              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
-                <div className="dashboard-box-innner">
-                  <div className="dashboard-box-icon">
-                    <img src={PurchaseIcon} alt="alt" />
-                  </div>
-                  <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">82</p>
-                    <p className="dashboard-box-footer-title">Purchase</p>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
-                <div
-                  className="dashboard-box-innner"
-                  id="dashboard-box-right-border-hide"
-                >
-                  <div className="dashboard-box-icon">
-                    <img src={CostIcon} alt="alt" />
-                  </div>
-                  <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">$ 13,573</p>
-                    <p className="dashboard-box-footer-title">Cost</p>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
-                <div className="dashboard-box-innner">
-                  <div className="dashboard-box-icon">
-                    <img src={CancelIcon} alt="alt" />
-                  </div>
-                  <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">5</p>
-                    <p className="dashboard-box-footer-title">Cancel</p>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={6} sm={3} md={3} lg={3} xl={3}>
-                <div
-                  className="dashboard-box-innner"
-                  style={{ borderRightWidth: "0px" }}
-                >
-                  <div className="dashboard-box-icon">
-                    <img src={ProfitIcon} alt="alt" />
-                  </div>
-                  <div className="dashboard-box-footer">
-                    <p className="dashboard-box-price">$17,432</p>
-                    <p className="dashboard-box-footer-title">Return</p>
-                  </div>
-                </div>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-          <div className="dashboard-box">
-            <p className="dashboard-box-title">Inventory Summary</p>
-            <div className="dashboard-box-right">
-              <div>
-                <img src={QuantityInHandIcon} alt="alt" />
-                <p className="dashboard-box-right-counter">868</p>
-                <p className="dashboard-box-right-title">Quantity in Hand</p>
-              </div>
-              <div>
-                <img src={ToBeReceivedIcon} alt="alt" />
-                <p className="dashboard-box-right-counter">200</p>
-                <p className="dashboard-box-right-title">To be received</p>
-              </div>
-            </div>
-          </div>
-          <div className="dashboard-box">
-            <p className="dashboard-box-title">Product Summary</p>
-            <div className="dashboard-box-right">
-              <div>
-                <img src={NumberOfSuppliersIcon} alt="alt" />
-                <p className="dashboard-box-right-counter">31</p>
-                <p className="dashboard-box-right-title">Number of Suppliers</p>
-              </div>
-              <div>
-                <img src={NumberOfCategoriesIcon} alt="alt" />
-                <p className="dashboard-box-right-counter">21</p>
-                <p className="dashboard-box-right-title">
-                  Number of Categories
-                </p>
-              </div>
-            </div>
-          </div>
-          {/* <div className="dashboard-box"> */}
-          {/*   <p className="dashboard-box-title">Order Summary</p> */}
-          {/*   <div style={{ marginTop: "40px" }}> */}
-          {/*     <OrderSummaryChart /> */}
-          {/*   </div> */}
-          {/* </div> */}
         </Grid>
       </Grid>
       <BootstrapDialog
