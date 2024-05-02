@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import { Dashboard, Orders, Profile } from "../../pages";
+import { Dashboard, Orders, Profile, Login } from "../../pages";
+import ProtectedRoute from "./ProtectedRoutes";
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -21,9 +22,12 @@ const RouterNavigation = () => {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/orders" element={<Orders />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+        <Route path="/log-in" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

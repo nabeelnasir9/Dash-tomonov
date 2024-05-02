@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { SideMenu } from "../../components";
 import axios from "axios";
 import "./index.css";
@@ -12,16 +12,17 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
+import { AuthContext } from "../../config/AuthContext";
 
 const Orders = () => {
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(0);
+  const { users, setUsers } = React.useContext(AuthContext);
 
   const convertToDollars = (amount) => {
     return `$${(amount / 100).toFixed(2)}`;
   };
-  const [users, setUsers] = useState([]);
-  const [expandedOrderId, setExpandedOrderId] = useState(null);
+  const [expandedOrderId, setExpandedOrderId] = React.useState(null);
 
   const fetchUsersWithOrders = async () => {
     try {
