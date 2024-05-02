@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { SideMenu } from "../../components";
 import axios from "axios";
 import "./index.css";
-import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -12,407 +11,234 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
-import FilterListIcon from "@mui/icons-material/FilterList";
-const columns = [
-  { id: "Products", label: "Products", minWidth: 150 },
-  { id: "OrderValue", label: "Order Value", minWidth: 120 },
-  {
-    id: "Quantity",
-    label: "Quantity",
-    minWidth: 150,
-  },
-  {
-    id: "OrderID",
-    label: "Order ID",
-    minWidth: 100,
-  },
-  {
-    id: "ExpectedDelivery",
-    label: "Expected Delivery",
-    minWidth: 150,
-  },
-  {
-    id: "Status",
-    label: "Status",
-    minWidth: 150,
-  },
-];
-const OrdersList = [
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Delayed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Confirmed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Returned",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Out for delivery",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Delayed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Confirmed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Returned",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Out for delivery",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Delayed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Confirmed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Returned",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Out for delivery",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Delayed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Confirmed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Returned",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Out for delivery",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Delayed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Confirmed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Returned",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Out for delivery",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Delayed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Confirmed",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Returned",
-  },
-  {
-    products: "Paint Image",
-    orderValue: "$4306",
-    quantity: 43,
-    orderID: 7535,
-    expectedDelivery: "11/12/24",
-    status: "Out for delivery",
-  },
-];
+import Collapse from "@mui/material/Collapse";
+
 const Orders = () => {
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [page, setPage] = React.useState(0);
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(0);
+
+  const convertToDollars = (amount) => {
+    return `$${(amount / 100).toFixed(2)}`;
   };
-  const [Orders, setOrders] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [expandedOrderId, setExpandedOrderId] = useState(null);
+
+  const fetchUsersWithOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/admin/all-orders`,
+      );
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   React.useEffect(() => {
-    allOrders();
+    fetchUsersWithOrders();
   }, []);
 
-  const allOrders = async () => {
-    const url = `${import.meta.env.VITE_SERVER_URL}/api/admin/all-orders`;
-    const response = await axios.get(url);
-    console.log(response.data);
+  const handleExpandClick = (orderId) => {
+    setExpandedOrderId(orderId === expandedOrderId ? null : orderId);
   };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
     <SideMenu>
-      <div className="orders-box">
-        <p>Overall Inventory</p>
-        <Grid container spacing={1}>
-          <Grid item xs={12} sm={6} md={2} lg={2} xl={2}>
-            <div className="orders-box-inner" style={{ paddingLeft: "0px" }}>
-              <p className="orders-box-title" style={{ color: "#1570EF" }}>
-                Categories
-              </p>
-              <p className="orders-box-value">14</p>
-              <p className="orders-box-inner-title">Last 7 days</p>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3.3} lg={3.3} xl={3.3}>
-            <div className="orders-box-inner" id="orders-box-inner-2">
-              <p className="orders-box-title" style={{ color: "#E19133" }}>
-                Total Products
-              </p>
-              <div className="orders-box-sec">
-                <div>
-                  <p className="orders-box-value">868</p>
-                  <p className="orders-box-inner-title">Last 7 days</p>
-                </div>
-                <div>
-                  <p className="orders-box-value">$25000</p>
-                  <p className="orders-box-inner-title">Revenue</p>
-                </div>
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3.3} lg={3.3} xl={3.3}>
-            <div className="orders-box-inner" id="orders-box-inner-3">
-              <p className="orders-box-title" style={{ color: "#845EBC" }}>
-                Top Selling
-              </p>
-              <div className="orders-box-sec">
-                <div>
-                  <p className="orders-box-value">5</p>
-                  <p className="orders-box-inner-title">Last 7 days</p>
-                </div>
-                <div>
-                  <p className="orders-box-value">$2500</p>
-                  <p className="orders-box-inner-title">Cost</p>
-                </div>
-              </div>
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={3.3} lg={3.3} xl={3.3}>
-            <div
-              className="orders-box-inner"
-              style={{ borderRightWidth: "0px" }}
-            >
-              <p className="orders-box-title" style={{ color: "#F36960" }}>
-                Low Stocks
-              </p>
-              <div className="orders-box-sec">
-                <div>
-                  <p className="orders-box-value">12</p>
-                  <p className="orders-box-inner-title">Ordered</p>
-                </div>
-                <div>
-                  <p className="orders-box-value">2</p>
-                  <p className="orders-box-inner-title">Not in stock</p>
-                </div>
-              </div>
-            </div>
-          </Grid>
-        </Grid>
-      </div>
-
       <div className="order-table-main">
-        <div className="order-table-header">
-          <p>Orders</p>
-          <div>
-            <Button variant="text" className="order-table-filter-btn">
-              <FilterListIcon style={{ marginRight: "10px" }} />
-              Filters
-            </Button>
-            <Button variant="text" className="order-table-history-btn">
-              Order History
-            </Button>
-          </div>
-        </div>
         <Paper sx={{ width: "100%" }} style={{ backgroundColor: "#fff" }}>
           <TableContainer sx={{ maxHeight: "55vh" }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{
-                        minWidth: column.minWidth,
-                        backgroundColor: "#fff",
-                      }}
-                    >
-                      <p className="order-table-header-title">{column.label}</p>
-                    </TableCell>
-                  ))}
+                  <TableCell style={{ fontWeight: "bolder" }}>
+                    User ID
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bolder" }}>
+                    Full Name
+                  </TableCell>
+                  <TableCell style={{ fontWeight: "bolder" }}>Email</TableCell>
+                  <TableCell style={{ fontWeight: "bolder" }}>
+                    Actions
+                  </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody style={{ backgroundColor: "#fff" }}>
-                {OrdersList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage,
-                ).map((row, i) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      <TableCell>
-                        <p className="order-table-text">{row.products}</p>
-                      </TableCell>
-                      <TableCell>
-                        <p className="order-table-text">{row.orderValue}</p>
-                      </TableCell>
-                      <TableCell>
-                        <p className="order-table-text">
-                          {row.quantity} Packets
-                        </p>
-                      </TableCell>
-                      <TableCell>
-                        <p className="order-table-text">{row.orderID}</p>
-                      </TableCell>
-                      <TableCell>
-                        <p className="order-table-text">
-                          {row.expectedDelivery}
-                        </p>
-                      </TableCell>
-                      <TableCell>
-                        <p
-                          className="order-table-text"
-                          style={{
-                            color:
-                              row.status === "Delayed"
-                                ? "#F79009"
-                                : row.status === "Confirmed"
-                                  ? "#1570EF"
-                                  : row.status === "Returned"
-                                    ? "#667085"
-                                    : "#12B76A",
-                          }}
-                        >
-                          {row.status}
-                        </p>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+              <TableBody>
+                {users
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((user) => (
+                    <React.Fragment key={user._id}>
+                      <TableRow>
+                        <TableCell>{user._id}</TableCell>
+                        <TableCell>{user.fullName}</TableCell>
+                        <TableCell>{user.email}</TableCell>
+                        <TableCell>
+                          <Button
+                            variant="outlined"
+                            onClick={() => handleExpandClick(user._id)}
+                          >
+                            {expandedOrderId === user._id
+                              ? "Collapse"
+                              : "Expand"}
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={4}>
+                          <Collapse
+                            in={expandedOrderId === user._id}
+                            timeout="auto"
+                            unmountOnExit
+                          >
+                            <Table>
+                              <TableHead>
+                                <TableRow>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Order ID
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Product Name
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Unit Amount
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Quantity
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Order Status(Stripe)
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Images
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
+                                    Customer Details
+                                  </TableCell>
+                                </TableRow>
+                              </TableHead>
+                              <TableBody>
+                                {user.orders.map((order) => (
+                                  <React.Fragment key={order._id}>
+                                    {order.lineItems.map((item, index) => (
+                                      <TableRow key={index}>
+                                        <TableCell>{order._id}</TableCell>
+                                        <TableCell>
+                                          {item.price_data.product_data.name}
+                                        </TableCell>
+                                        <TableCell>
+                                          {convertToDollars(
+                                            item.price_data.unit_amount,
+                                          )}
+                                        </TableCell>
+                                        <TableCell>{item.quantity}</TableCell>
+                                        <TableCell>
+                                          {order.shipping.payment_status}
+                                        </TableCell>
+
+                                        <TableCell>
+                                          {item.price_data.product_data.images.map(
+                                            (image, idx) => (
+                                              <a
+                                                key={idx}
+                                                href={image}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                <img
+                                                  src={image}
+                                                  alt={`Product ${idx}`}
+                                                  style={{
+                                                    width: "200px",
+                                                    height: "350px",
+                                                    marginRight: "5px",
+                                                    cursor: "pointer",
+                                                  }}
+                                                />
+                                              </a>
+                                            ),
+                                          )}
+                                        </TableCell>
+
+                                        <TableCell>
+                                          {order.shipping &&
+                                            order.shipping.customer_details && (
+                                              <div>
+                                                Name:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.name
+                                                }
+                                                <br />
+                                                Email:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.email
+                                                }
+                                                <br />
+                                                Address:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.address
+                                                    .line1
+                                                }
+                                                <br />
+                                                City:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.address
+                                                    .city
+                                                }
+                                                <br />
+                                                State:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.address
+                                                    .state
+                                                }
+                                                <br />
+                                                Postal Code:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.address
+                                                    .postal_code
+                                                }
+                                                <br />
+                                                Country:{" "}
+                                                {
+                                                  order.shipping
+                                                    .customer_details.address
+                                                    .country
+                                                }
+                                                <br />
+                                              </div>
+                                            )}
+                                        </TableCell>
+                                      </TableRow>
+                                    ))}
+                                  </React.Fragment>
+                                ))}
+                              </TableBody>
+                            </Table>
+                          </Collapse>
+                        </TableCell>
+                      </TableRow>
+                    </React.Fragment>
+                  ))}
               </TableBody>
             </Table>
           </TableContainer>
           <TablePagination
             rowsPerPageOptions={[5, 10, 25, 100]}
             component="div"
-            count={OrdersList.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -428,4 +254,5 @@ const Orders = () => {
     </SideMenu>
   );
 };
+
 export default Orders;

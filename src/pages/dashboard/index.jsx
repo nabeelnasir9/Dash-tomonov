@@ -149,22 +149,6 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </div>
-          {/* <div className="dashboard-box"> */}
-          {/*   <div className="dashboard-box-header"> */}
-          {/*     <p className="dashboard-box-title">Sales & Purchase</p> */}
-          {/*     <Button */}
-          {/*       variant="text" */}
-          {/*       onClick={() => setOpen(true)} */}
-          {/*       className="dashboard-box-header-filter-btn" */}
-          {/*     > */}
-          {/*       <CalendarMonthIcon style={{ marginRight: "10px" }} /> */}
-          {/*       {filter} */}
-          {/*     </Button> */}
-          {/*   </div> */}
-          {/*   <div style={{ marginTop: "30px" }}> */}
-          {/*     <SalesAndPurchaseChart /> */}
-          {/*   </div> */}
-          {/* </div> */}
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
           <div className="dashboard-box">
