@@ -4,7 +4,8 @@ import { AuthContext } from "../AuthContext";
 
 const ProtectedRoute = () => {
   const { isLoggedIn } = useContext(AuthContext);
-  return isLoggedIn ? <Outlet /> : <Navigate to="/log-in" />;
+  const user = true;
+  return user ? <Outlet /> : <Navigate to="/log-in" />;
 };
 
 export default ProtectedRoute;

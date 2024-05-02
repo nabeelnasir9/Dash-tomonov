@@ -1,7 +1,12 @@
 import React from "react";
+import axios from "axios";
 import { SideMenu } from "../../components";
 import "./index.css";
 import Paper from "@mui/material/Paper";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -17,7 +22,7 @@ const Orders = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const { users } = React.useContext(AuthContext);
-
+  const [selectedStatus, setSelectedStatus] = React.useState("");
   const convertToDollars = (amount) => {
     return `$${(amount / 100).toFixed(2)}`;
   };
@@ -26,9 +31,42 @@ const Orders = () => {
   const handleExpandClick = (orderId) => {
     setExpandedOrderId(orderId === expandedOrderId ? null : orderId);
   };
-
+  const handleStatusChange = (event) => {
+    setSelectedStatus(event.target.value);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
+  };
+
+  const handleUpdateStatus = async (orderId) => {
+    try {
+      console.log(orderId);
+      console.log(selectedStatus);
+      await updateDeliveryStatus(orderId, selectedStatus);
+      window.location.reload();
+    } catch (error) {
+      alert("Failed to update delivery status. Please try again.");
+    }
+  };
+
+  const updateDeliveryStatus = async (orderId, selectedStatus) => {
+    try {
+      await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/api/admin/update-status`,
+        {
+          orderId,
+          deliveryStatus: selectedStatus,
+        },
+      );
+
+      console.log("Delivery status updated successfully");
+      window.location.reload(); // Reload the page after successful status update
+    } catch (error) {
+      console.error("Error updating delivery status:", error.message);
+      // Handle error or notify the user
+      // For example, you can show an error message on the UI
+      alert("Failed to update delivery status. Please try again.");
+    }
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -90,6 +128,9 @@ const Orders = () => {
                                     Order ID
                                   </TableCell>
                                   <TableCell style={{ fontWeight: "bolder" }}>
+                                    Delivery Status
+                                  </TableCell>
+                                  <TableCell style={{ fontWeight: "bolder" }}>
                                     Product Name
                                   </TableCell>
                                   <TableCell style={{ fontWeight: "bolder" }}>
@@ -115,6 +156,39 @@ const Orders = () => {
                                     {order.lineItems.map((item, index) => (
                                       <TableRow key={index}>
                                         <TableCell>{order._id}</TableCell>
+                                        <TableCell>
+                                          <FormControl>
+                                            <InputLabel>
+                                              {order.delivery_status}
+                                            </InputLabel>
+                                            <Select
+                                              defaultValue="Expected"
+                                              value={selectedStatus}
+                                              onChange={handleStatusChange}
+                                            >
+                                              <MenuItem
+                                                selected
+                                                value="Expected"
+                                              >
+                                                Expected
+                                              </MenuItem>
+                                              <MenuItem value="Shipped">
+                                                Shipped
+                                              </MenuItem>
+                                              <MenuItem value="Delivered">
+                                                Delivered
+                                              </MenuItem>
+                                            </Select>
+                                            <Button
+                                              variant="contained"
+                                              onClick={() =>
+                                                handleUpdateStatus(order._id)
+                                              }
+                                            >
+                                              Update Status
+                                            </Button>
+                                          </FormControl>
+                                        </TableCell>
                                         <TableCell>
                                           {item.price_data.product_data.name}
                                         </TableCell>
