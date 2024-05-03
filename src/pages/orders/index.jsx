@@ -6,6 +6,7 @@ import Paper from "@mui/material/Paper";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import MenuItem from "@mui/material/MenuItem";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -16,55 +17,68 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Collapse from "@mui/material/Collapse";
-import { AuthContext } from "../../config/AuthContext";
 
 const Orders = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
-  const { users } = React.useContext(AuthContext);
   const [selectedStatus, setSelectedStatus] = React.useState("");
+  const [expandedOrderId, setExpandedOrderId] = React.useState(null);
+  const fetchUsersWithOrders = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_SERVER_URL}/api/admin/all-users`,
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw error;
+    }
+  };
+  const { data: users = [], refetch } = useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsersWithOrders,
+  });
+
   const convertToDollars = (amount) => {
     return `$${(amount / 100).toFixed(2)}`;
   };
-  const [expandedOrderId, setExpandedOrderId] = React.useState(null);
 
   const handleExpandClick = (orderId) => {
-    setExpandedOrderId(orderId === expandedOrderId ? null : orderId);
+    setExpandedOrderId((prevOrderId) =>
+      prevOrderId === orderId ? null : orderId,
+    );
   };
+
   const handleStatusChange = (event) => {
     setSelectedStatus(event.target.value);
   };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleUpdateStatus = async (orderId) => {
-    try {
-      console.log(orderId);
-      console.log(selectedStatus);
-      await updateDeliveryStatus(orderId, selectedStatus);
-      window.location.reload();
-    } catch (error) {
-      alert("Failed to update delivery status. Please try again.");
-    }
-  };
-
-  const updateDeliveryStatus = async (orderId, selectedStatus) => {
-    try {
-      await axios.post(
+  const { mutate: updateDelivery } = useMutation({
+    mutationFn: (orderId) => {
+      return axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/admin/update-status`,
         {
           orderId,
           deliveryStatus: selectedStatus,
         },
       );
-
-      console.log("Delivery status updated successfully");
-      window.location.reload(); // Reload the page after successful status update
+    },
+    onSuccess: () => {
+      console.log("Mutation success");
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
+    },
+  });
+  const handleUpdateStatus = (orderId) => {
+    try {
+      updateDelivery(orderId);
+      refetch();
     } catch (error) {
-      console.error("Error updating delivery status:", error.message);
-      // Handle error or notify the user
-      // For example, you can show an error message on the UI
       alert("Failed to update delivery status. Please try again.");
     }
   };
