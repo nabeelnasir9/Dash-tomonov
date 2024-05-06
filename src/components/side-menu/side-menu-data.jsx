@@ -4,8 +4,9 @@ import { useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import Logo from "./../../assets/logo.png";
+import Logo from "../../assets/synthseer.png";
 import GridViewIcon from "@mui/icons-material/GridView";
+import CreateIcon from "@mui/icons-material/Create";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -69,6 +70,23 @@ const SideMenuData = () => {
                   <Button
                     variant="text"
                     className={
+                      CurrentPagePath === "/prompts"
+                        ? "side-menu-active-page"
+                        : "side-menu-page"
+                    }
+                    onClick={() => {
+                      navigate("/prompts");
+                    }}
+                  >
+                    <CreateIcon />
+                    <span className="side-menu-page-title">Prompts</span>
+                  </Button>
+                </li>
+
+                <li className="side-menu-list-item">
+                  <Button
+                    variant="text"
+                    className={
                       CurrentPagePath === "/profile"
                         ? "side-menu-active-page"
                         : "side-menu-page"
@@ -85,13 +103,7 @@ const SideMenuData = () => {
               </ul>
             </div>
             <div className="side-menu-footer-container">
-              <Button
-                variant="text"
-                className={"side-menu-page"}
-                // onClick={() => {
-                //   navigate("/settings");
-                // }}
-              >
+              <Button variant="text" className={"side-menu-page"}>
                 <LogoutOutlinedIcon />
                 <span className="side-menu-page-title">Log Out</span>
               </Button>

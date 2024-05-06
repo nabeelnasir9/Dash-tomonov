@@ -34,7 +34,12 @@ const Orders = () => {
       throw error;
     }
   };
-  const { data: users = [], refetch } = useQuery({
+  const {
+    data: users = [],
+    refetch,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["users"],
     queryFn: fetchUsersWithOrders,
   });
@@ -90,6 +95,11 @@ const Orders = () => {
 
   return (
     <SideMenu>
+      {isLoading && <div className="text-4xl font-bold my-5">Loading...</div>}
+      {isError && (
+        <div className="text-4xl font-bold my-5">Error fetching prompts</div>
+      )}
+
       <div className="order-table-main">
         <Paper sx={{ width: "100%" }} style={{ backgroundColor: "#fff" }}>
           <TableContainer sx={{ maxHeight: "55vh" }}>
