@@ -229,23 +229,31 @@ const Orders = () => {
                                         <TableCell>
                                           {item.price_data.product_data.images.map(
                                             (image, idx) => (
-                                              <a
+                                              <div
                                                 key={idx}
-                                                href={image}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                                style={{
+                                                  display: "flex",
+                                                  flexDirection: "column",
+                                                }}
                                               >
-                                                <img
-                                                  src={image}
-                                                  alt={`Product ${idx}`}
-                                                  style={{
-                                                    width: "200px",
-                                                    height: "350px",
-                                                    marginRight: "5px",
-                                                    cursor: "pointer",
-                                                  }}
-                                                />
-                                              </a>
+                                                <a
+                                                  href={image}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                  download={`Product_${idx}`}
+                                                >
+                                                  <img
+                                                    src={image}
+                                                    alt={`Product ${idx}`}
+                                                    style={{
+                                                      width: "200px",
+                                                      height: "350px",
+                                                      marginRight: "5px",
+                                                      cursor: "pointer",
+                                                    }}
+                                                  />
+                                                </a>
+                                              </div>
                                             ),
                                           )}
                                         </TableCell>

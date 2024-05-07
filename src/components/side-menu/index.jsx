@@ -13,7 +13,6 @@ import Logo from "../../assets/synthseer.png";
 import GridViewIcon from "@mui/icons-material/GridView";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import SearchIcon from "./../../assets/svg/search.svg";
 import NotificationIcon from "./../../assets/svg/notification.svg";
 
@@ -134,18 +133,18 @@ export const SideMenu = (props) => {
                             </ul>
                           </div>
                           <div className="side-menu-footer-container">
-                            <Button
-                              variant="text"
-                              className={"side-menu-page"}
-                              // onClick={() => {
-                              //   navigate("/settings");
-                              // }}
-                            >
-                              <LogoutOutlinedIcon />
-                              <span className="side-menu-page-title">
-                                Log Out
-                              </span>
-                            </Button>
+                            {/* <Button */}
+                            {/*   variant="text" */}
+                            {/*   className={"side-menu-page"} */}
+                            {/*   // onClick={() => { */}
+                            {/*   //   navigate("/settings"); */}
+                            {/*   // }} */}
+                            {/* > */}
+                            {/*   <LogoutOutlinedIcon /> */}
+                            {/*   <span className="side-menu-page-title"> */}
+                            {/*     Log Out */}
+                            {/*   </span> */}
+                            {/* </Button> */}
                           </div>
                         </div>
                       </div>

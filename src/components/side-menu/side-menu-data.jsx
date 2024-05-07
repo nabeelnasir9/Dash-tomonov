@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./side-menu-data.css";
 import { useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -9,7 +9,6 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import CreateIcon from "@mui/icons-material/Create";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 const SideMenuData = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -103,10 +102,10 @@ const SideMenuData = () => {
               </ul>
             </div>
             <div className="side-menu-footer-container">
-              <Button variant="text" className={"side-menu-page"}>
-                <LogoutOutlinedIcon />
-                <span className="side-menu-page-title">Log Out</span>
-              </Button>
+              {/* <Button variant="text" className={"side-menu-page"}> */}
+              {/*   <LogoutOutlinedIcon /> */}
+              {/*   <span className="side-menu-page-title">Log Out</span> */}
+              {/* </Button> */}
             </div>
           </div>
         </div>
