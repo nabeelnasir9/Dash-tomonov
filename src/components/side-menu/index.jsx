@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CreateIcon from "@mui/icons-material/Create";
 import SideMenuData from "./side-menu-data";
 import { Grid, IconButton } from "@mui/material";
 import "./index.css";
@@ -108,6 +109,24 @@ export const SideMenu = (props) => {
                                   <AddShoppingCartIcon />
                                   <span className="side-menu-page-title">
                                     Orders
+                                  </span>
+                                </Button>
+                              </li>
+                              <li className="side-menu-list-item">
+                                <Button
+                                  variant="text"
+                                  className={
+                                    CurrentPagePath === "/orders"
+                                      ? "side-menu-active-page"
+                                      : "side-menu-page"
+                                  }
+                                  onClick={() => {
+                                    navigate("/prompts");
+                                  }}
+                                >
+                                  <CreateIcon />
+                                  <span className="side-menu-page-title">
+                                    Prompts
                                   </span>
                                 </Button>
                               </li>
