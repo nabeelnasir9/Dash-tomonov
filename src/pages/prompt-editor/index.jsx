@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 import { SideMenu } from "../../components";
 import TextareaAutosize from "@mui/material/TextareaAutosize";
 import Button from "@mui/material/Button";
@@ -45,12 +46,12 @@ const PromptEditor = () => {
         `${import.meta.env.VITE_SERVER_URL}/api/admin/prompt-editor`,
         updatedPrompts,
       );
-      alert("Prompts updated successfully");
+      toast.success("Prompts updated successfully");
 
       refetch();
     } catch (error) {
       console.error("Error updating prompts:", error);
-      alert("Error updating prompts");
+      toast.error("Error updating prompts");
     }
   };
 

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import MenuItem from "@mui/material/MenuItem";
+import Menu from "@mui/material/Menu";
+import axios from "axios";
 import CreateIcon from "@mui/icons-material/Create";
 import SideMenuData from "./side-menu-data";
-import { Grid, IconButton } from "@mui/material";
+import { Grid, IconButton, Badge } from "@mui/material"; // Import Badge component
 import "./index.css";
 import { useTheme } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -10,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import Logo from "../../assets/synthseer.png";
 import GridViewIcon from "@mui/icons-material/GridView";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
@@ -20,13 +24,67 @@ import NotificationIcon from "./../../assets/svg/notification.svg";
 export const SideMenu = (props) => {
   const navigate = useNavigate();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [newOrders, setNewOrders] = useState(0);
+  const [currentTime, setCurrentTime] = useState("");
+  const [notificationBadge, setNotificationBadge] = useState(false); // State to control badge visibility
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const location = useLocation();
   let CurrentPagePath = location.pathname;
+
   const handleDrawerClose = () => {
     setIsDrawerOpen(false);
   };
+
+  const getNoti = useQuery({
+    queryKey: ["getnoti"],
+    queryFn: async () => {
+      try {
+        const url = `${import.meta.env.VITE_SERVER_URL}/api/admin/order-noti`;
+        const res = await axios.get(url);
+        console.log(res.data);
+        return res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (getNoti.isSuccess) {
+      const remain = parseInt(localStorage.getItem("noti")) || 0;
+      const newData = parseInt(getNoti.data);
+      const difference = newData - remain;
+      if (difference > 0) {
+        // Show badge when new notifications arrive
+        setNotificationBadge(true);
+        for (let i = 0; i < difference; i++) {}
+      }
+      setNewOrders(difference);
+      localStorage.setItem("noti", newData.toString());
+    }
+  }, [getNoti.isSuccess, getNoti.data]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   const theme = useTheme();
   const isMatch = useMediaQuery(theme.breakpoints.down("lg"));
+
   return (
     <>
       <div>
@@ -179,9 +237,36 @@ export const SideMenu = (props) => {
                       />
                     </div>
                     <div>
-                      <Button variant="text" className="side-menu-notificatin">
-                        <img src={NotificationIcon} />
-                      </Button>
+                      <IconButton
+                        id="basic-button"
+                        className="side-menu-notificatin"
+                        aria-controls={open ? "basic-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        onClick={handleClick}
+                      >
+                        <Badge
+                          badgeContent={notificationBadge ? "•" : null}
+                          color="secondary"
+                        >
+                          <img src={NotificationIcon} />
+                        </Badge>
+                      </IconButton>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        {Array.from({ length: newOrders }, (_, index) => (
+                          <MenuItem key={index} onClick={handleClose}>
+                            New Order {index + 1} at {currentTime}
+                          </MenuItem>
+                        ))}
+                      </Menu>
                       <Button
                         variant="text"
                         className="side-menu-profile"
