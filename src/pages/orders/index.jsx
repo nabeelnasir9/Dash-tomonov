@@ -1,4 +1,5 @@
 import React from "react";
+import toast from "react-hot-toast";
 import axios from "axios";
 import { SideMenu } from "../../components";
 import "./index.css";
@@ -73,10 +74,10 @@ const Orders = () => {
       );
     },
     onSuccess: () => {
-      console.log("Mutation success");
+      toast.success("Status updated successfully");
     },
     onError: (error) => {
-      console.error("Mutation error:", error);
+      toast.error("Update Error:", error);
     },
   });
   const handleUpdateStatus = (orderId) => {
@@ -102,7 +103,7 @@ const Orders = () => {
 
       <div className="order-table-main">
         <Paper sx={{ width: "100%" }} style={{ backgroundColor: "#fff" }}>
-          <TableContainer sx={{ maxHeight: "55vh" }}>
+          <TableContainer sx={{ maxHeight: "80vh" }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
@@ -130,6 +131,7 @@ const Orders = () => {
                         <TableCell>
                           <Button
                             variant="outlined"
+                            color="secondary"
                             onClick={() => handleExpandClick(user._id)}
                           >
                             {expandedOrderId === user._id
@@ -199,12 +201,22 @@ const Orders = () => {
                                               <MenuItem value="Shipped">
                                                 Shipped
                                               </MenuItem>
+                                              <MenuItem value="Inproduction">
+                                                Inproduction
+                                              </MenuItem>
+                                              <MenuItem value="Cancelled">
+                                                Cancelled
+                                              </MenuItem>
+                                              <MenuItem value="Rejected">
+                                                Rejected
+                                              </MenuItem>
                                               <MenuItem value="Delivered">
                                                 Delivered
                                               </MenuItem>
                                             </Select>
                                             <Button
                                               variant="contained"
+                                              color="secondary"
                                               onClick={() =>
                                                 handleUpdateStatus(order._id)
                                               }
