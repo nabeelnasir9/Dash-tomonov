@@ -20,6 +20,7 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SearchIcon from "./../../assets/svg/search.svg";
 import NotificationIcon from "./../../assets/svg/notification.svg";
+import { IoLogOut } from "react-icons/io5";
 
 export const SideMenu = (props) => {
   const navigate = useNavigate();
@@ -207,6 +208,24 @@ export const SideMenu = (props) => {
                                 </Button>
                               </li>
                               <br />
+                              <li className="side-menu-list-item">
+                              <Button
+                                  variant="text"
+                                  className={
+                                    CurrentPagePath === "/logout"
+                                      ? "side-menu-active-page"
+                                      : "side-menu-page"
+                                  }
+                                  onClick={() => {
+                                    navigate("/log-in");
+                                  }}
+                                >
+                                  <IoLogOut />
+                                  <span className="side-menu-page-title">
+                                    Logout
+                                  </span>
+                                </Button>
+                              </li>
                             </ul>
                           </div>
                           <div className="side-menu-footer-container">

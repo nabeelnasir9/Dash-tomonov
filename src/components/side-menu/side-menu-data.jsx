@@ -9,6 +9,8 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import CreateIcon from "@mui/icons-material/Create";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import { IoLogOut } from "react-icons/io5";
+
 const SideMenuData = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,6 +101,22 @@ const SideMenuData = () => {
                   </Button>
                 </li>
                 <br />
+                <li className="side-menu-list-item">
+                  <Button
+                    variant="text"
+                    className={
+                      CurrentPagePath === "/logout"
+                        ? "side-menu-active-page"
+                        : "side-menu-page"
+                    }
+                    onClick={() => {
+                      navigate("/log-in");
+                    }}
+                  >
+                    <IoLogOut />
+                    <span className="side-menu-page-title">Logout</span>
+                  </Button>
+                </li>
               </ul>
             </div>
             <div className="side-menu-footer-container">

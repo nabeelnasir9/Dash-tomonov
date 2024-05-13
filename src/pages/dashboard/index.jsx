@@ -1,3 +1,49 @@
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { SideMenu } from "../../components";
+// import Grid from "@mui/material/Grid";
+// import "./index.css";
+// import SalesIcon from "./../../assets/svg/sales.svg";
+// import RevenueIcon from "./../../assets/svg/revenue.svg";
+// import ProfitIcon from "./../../assets/svg/profit.svg";
+// import CostIcon from "./../../assets/svg/cost.svg";
+// import Dialog from "@mui/material/Dialog";
+// import DialogContent from "@mui/material/DialogContent";
+// import { styled } from "@mui/material/styles";
+// import Typography from "@mui/material/Typography";
+// import Button from "@mui/material/Button";
+// import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+// const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+//   "& .MuiDialogContent-root": {
+//     padding: theme.spacing(2),
+//   },
+//   "& .MuiDialogActions-root": {
+//     padding: theme.spacing(1),
+//   },
+// }));
+// const Dashboard = () => {
+//   const [open, setOpen] = useState(false);
+//   const convertToDollars = (amount) => {
+//     return `$${(amount / 100).toFixed(2)}`;
+//   };
+//   const [filter, setFilter] = useState("Weekly");
+//   const FilterList = ["Weekly", "Monthly", "Yearly"];
+//   const [Orders, setOrders] = useState([]);
+//   const getOrders = async () => {
+//     try {
+//       const response = await axios.get(
+//         `${import.meta.env.VITE_SERVER_URL}/api/admin/all-orders`,
+//       );
+//       setOrders(response.data);
+//     } catch (error) {
+//       console.error("Error fetching users:", error);
+//     }
+//   };
+
+//   useEffect(() => {
+//     getOrders();
+//   }, []);
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SideMenu } from "../../components";
@@ -13,6 +59,11 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { Bar } from 'react-chartjs-2';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -21,6 +72,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     padding: theme.spacing(1),
   },
 }));
+
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
   const convertToDollars = (amount) => {
@@ -43,6 +95,38 @@ const Dashboard = () => {
   useEffect(() => {
     getOrders();
   }, []);
+
+  const data = {
+    labels: ['Total Orders', 'Paid', 'Unpaid', 'Revenue'],
+    datasets: [
+      {
+        label: 'Orders Data',
+        data: [Orders.totalItemCount, Orders.paymentStatusCounts?.paid, Orders.paymentStatusCounts?.unpaid, Orders.totalAmount / 100],
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+    maintainAspectRatio: false,
+  };
 
   return (
     <SideMenu>
@@ -119,6 +203,9 @@ const Dashboard = () => {
                 </div>
               </Grid>
             </Grid>
+          </div>
+          <div className="dashboard-box">
+            <Bar data={data} options={options} height={400} />
           </div>
         </Grid>
       </Grid>

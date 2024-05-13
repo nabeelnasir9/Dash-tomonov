@@ -105,7 +105,7 @@ const PromptEditor = () => {
               variant="contained"
               color="primary"
               onClick={handleSave}
-              className="mt-4"
+              className="mt-4 bg-purple-600"
             >
               Save Changes
             </Button>
