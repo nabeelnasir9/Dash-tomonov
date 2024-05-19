@@ -91,7 +91,8 @@ const PromptEditor = () => {
             <h2 className="text-xl font-semibold mb-2">Existing Prompts</h2>
             <ul>
               {prompts.map((prompt, index) => (
-                <li key={index} className="mb-4">
+                <li key={index} className="mb-4 flex items-center">
+                  <p className="font-lg font-semibold mr-4">{index + 1}</p>
                   <TextareaAutosize
                     minRows={4}
                     className="w-full p-2 border rounded-md"
