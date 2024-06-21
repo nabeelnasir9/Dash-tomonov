@@ -93,12 +93,15 @@ const PromptEditor = () => {
               {prompts.map((prompt, index) => (
                 <li key={index} className="mb-4 flex items-center">
                   <p className="font-lg font-semibold mr-4">{index + 1}</p>
-                  <TextareaAutosize
-                    minRows={4}
-                    className="w-full p-2 border rounded-md"
-                    defaultValue={prompt.prompt}
-                    onChange={(e) => handleChange(index, e)}
-                  />
+                  <div className="flex flex-col w-full gap-2">
+                    <p className="font-lg font-semibold mr-4">{prompt.text}</p>
+                    <TextareaAutosize
+                      minRows={4}
+                      className="w-full p-2 border rounded-md"
+                      defaultValue={prompt.prompt}
+                      onChange={(e) => handleChange(index, e)}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
