@@ -235,7 +235,7 @@ const Orders = () => {
                                         </TableCell>
                                         <TableCell>{item.quantity}</TableCell>
                                         <TableCell>
-                                          {order.shipping.payment_status}
+                                          {order?.shipping?.payment_status}
                                         </TableCell>
 
                                         <TableCell>
