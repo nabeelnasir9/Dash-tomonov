@@ -10,6 +10,31 @@ import axios from "axios";
 const PromptEditor = () => {
   const [updatedPrompts, setUpdatedPrompts] = useState([]);
 
+  const majorArcanaOrder = [
+    "The Fool",
+    "The Magician",
+    "The High Priestess",
+    "The Empress",
+    "The Emperor",
+    "The Hierophant",
+    "The Lovers",
+    "The Chariot",
+    "Strength",
+    "The Hermit",
+    "Wheel of Fortune",
+    "Justice",
+    "The Hanged Man",
+    "Death",
+    "Temperance",
+    "The Devil",
+    "The Tower",
+    "The Star",
+    "The Moon",
+    "The Sun",
+    "Judgement",
+    "The World",
+  ];
+
   const {
     data: prompts,
     isLoading,
@@ -21,7 +46,14 @@ const PromptEditor = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/api/admin/prompts`,
       );
-      return response.data;
+
+      const sortedData = response.data.sort((a, b) => {
+        const aIndex = majorArcanaOrder.indexOf(a.text);
+        const bIndex = majorArcanaOrder.indexOf(b.text);
+        return aIndex - bIndex;
+      });
+
+      return sortedData;
     },
   });
 
@@ -90,7 +122,7 @@ const PromptEditor = () => {
           <div>
             <h2 className="text-xl font-semibold mb-2">Existing Prompts</h2>
             <ul>
-              {prompts.map((prompt, index) => (
+              {updatedPrompts.map((prompt, index) => (
                 <li key={index} className="mb-4 flex items-center">
                   <p className="font-lg font-semibold mr-4">{index + 1}</p>
                   <div className="flex flex-col w-full gap-2">
